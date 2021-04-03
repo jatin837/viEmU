@@ -8,3 +8,9 @@ exe: main.c
 
 clean: 
 	rm ./exe
+
+debug:
+	$(CC) -o debug -g main.c
+
+run_debug:
+	gdb ./debug
