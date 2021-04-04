@@ -7,7 +7,7 @@ exe: main.c
 	$(CC) -o exe main.c
 
 clean: 
-	rm ./exe
+	rm ./exe ./debug
 
 debug:
 	$(CC) -o debug -g main.c
