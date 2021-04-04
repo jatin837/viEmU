@@ -1,14 +1,25 @@
+#include <stdlib.h>
 #include <termios.h>
 #include <stdio.h>
 #include <unistd.h>
 
 // tcgetattr (  provided by termios.h ) is used to read current attribute int a struct whose address is passed along with the attribute itself
 // tcsetattr is used to write the new terminal attribute back out 
+
+struct termios orig_termios;
+
+void disable_raw_mode(void);
+
 void enable_raw_mode() {
-	struct termios raw;
-	tcgetattr(STDIN_FILENO, &raw);
+	tcgetattr(STDIN_FILENO, &orig_termios);
+	atexit(disable_raw_mode);
+	struct termios raw = orig_termios;
 	raw.c_lflag = raw.c_lflag & ~(ECHO);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
+}
+
+void disable_raw_mode() {
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios);
 }
 
 int main(int argc, char **argv){
