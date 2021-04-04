@@ -12,5 +12,5 @@ clean:
 debug:
 	$(CC) -o debug -g main.c
 
-run_debug:
+run_debug: debug
 	gdb ./debug
