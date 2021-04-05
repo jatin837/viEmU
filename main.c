@@ -1,6 +1,7 @@
+#include <ctype.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <termios.h>
-#include <stdio.h>
 #include <unistd.h>
 
 // tcgetattr (  provided by termios.h ) is used to read current attribute int a struct whose address is passed along with the attribute itself
@@ -26,6 +27,12 @@ int main(int argc, char **argv){
 	enable_raw_mode();
 
 	char c; 
-	while (read(STDIN_FILENO, &c, 1) == 1 && c != 'q');
+	while (read(STDIN_FILENO, &c, 1) >= 1 && c != 'q') {
+		if (iscntrl(c)) {
+			printf("%c\n", c);
+		} else {
+			printf("%d ('%c')\n", c, c);
+		}
+	}
 	return 0;
 }
