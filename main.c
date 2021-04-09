@@ -8,6 +8,13 @@
 // tcgetattr (  provided by termios.h ) is used to read current attribute int a struct whose address is passed along with the attribute itself
 // tcsetattr is used to write the new terminal attribute back out 
 
+/*
+	Defining a bitmask CTRL_KEY which returns the bitwise AND of a key with ctrl(31 decimal)
+*/
+#define CTRL_KEY(k) ((k) & 0x1f)
+// 0x1f in binary --> 00011111
+
+
 struct termios orig_termios;
 
 void disable_raw_mode(void);
@@ -52,7 +59,8 @@ int main(int argc, char **argv){
 			printf("%d\r\n", c);
 		else 
 			printf("%d => %c \r\n", c, c);
-		if (c == 'q') break;
+		if (c == CTRL_KEY('q')) 
+			break;
 	}
 	return 0;
 }
