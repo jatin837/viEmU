@@ -20,9 +20,14 @@
 
 struct termios orig_termios;
 
+void editor_refresh_screen() {
+	write(STDOUT_FILENO, REFRESH_SCR, 4);
+	write(STDOUT_FILENO, REPOSITION_CURSOR, 3);
+}
 void disable_raw_mode(void);
 
 void die(const char *s) {
+	editor_refresh_screen();
 	perror(s);
 	exit(1);
 }
@@ -50,10 +55,6 @@ void disable_raw_mode() {
 	if (status  == -1)
 		die("tcsetatttr failed");
 }
-char editor_refresh_screen() {
-	write(STDOUT_FILENO, REFRESH_SCR, 4);
-	write(STDOUT_FILENO, REPOSITION_CURSOR, 3);
-}
 char editor_read_key() {
 	int nread;
 	char c;
@@ -70,6 +71,7 @@ void editor_process_keypress() {
 
 	switch (c) {
 		case CTRL_KEY('q'):
+			editor_refresh_screen();	
 			exit(0);
 			break;
 	}
