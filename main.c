@@ -12,6 +12,8 @@
 	Defining a bitmask CTRL_KEY which returns the bitwise AND of a key with ctrl(31 decimal)
 */
 #define CTRL_KEY(k) ((k) & 0x1f)
+#define REFRESH_SCR "\x1b[2J"
+
 // 0x1f in binary --> 00011111
 
 
@@ -47,7 +49,9 @@ void disable_raw_mode() {
 	if (status  == -1)
 		die("tcsetatttr failed");
 }
-
+char editor_refresh_screen() {
+	write(STDOUT_FILENO, REFRESH_SCR, 4);
+}
 char editor_read_key() {
 	int nread;
 	char c;
@@ -71,7 +75,7 @@ void editor_process_keypress() {
 
 int main(int argc, char **argv){
 	enable_raw_mode();
-	
+	editor_refresh_screen();
 	while (1)
 		editor_process_keypress();
 	return 0;
