@@ -12,13 +12,20 @@
 	Defining a bitmask CTRL_KEY which returns the bitwise AND of a key with ctrl(31 decimal)
 */
 #define CTRL_KEY(k) ((k) & 0x1f)
-#define REFRESH_SCR "\x1b[2J"
-#define REPOSITION_CURSOR "\x1b[H"
+#define REFRESH_SCR "\x1b[2J" // <esc>[2J -> clear entire screen
+#define REPOSITION_CURSOR "\x1b[H" // <esc>[H to reposition cursor back up top-left
 
 // 0x1f in binary --> 00011111
 
 
 struct termios orig_termios;
+
+void editor_draw_rows() {
+	int y;
+	for (y = 0; y<24; y++) {
+		write(STDOUT_FILENO, "~\r\n", 3);
+	}
+}
 
 void editor_refresh_screen() {
 	write(STDOUT_FILENO, REFRESH_SCR, 4);
@@ -80,6 +87,10 @@ void editor_process_keypress() {
 int main(int argc, char **argv){
 	enable_raw_mode();
 	editor_refresh_screen();
+	editor_draw_rows();
+
+	write(STDOUT_FILENO, "\x1b[H", 3);
+
 	while (1)
 		editor_process_keypress();
 	return 0;
