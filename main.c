@@ -13,6 +13,7 @@
 */
 #define CTRL_KEY(k) ((k) & 0x1f)
 #define REFRESH_SCR "\x1b[2J"
+#define REPOSITION_CURSOR "\x1b[H"
 
 // 0x1f in binary --> 00011111
 
@@ -51,6 +52,7 @@ void disable_raw_mode() {
 }
 char editor_refresh_screen() {
 	write(STDOUT_FILENO, REFRESH_SCR, 4);
+	write(STDOUT_FILENO, REPOSITION_CURSOR, 3);
 }
 char editor_read_key() {
 	int nread;
