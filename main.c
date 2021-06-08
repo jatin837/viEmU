@@ -22,8 +22,10 @@ struct termios orig_termios;
 
 void editor_draw_rows() {
 	int y;
+	char COL[32];
 	for (y = 0; y<24; y++) {
-		write(STDOUT_FILENO, "~\r\n", 3);
+		snprintf(COL, sizeof(COL), "%d \n\r", y+1);
+		write(STDOUT_FILENO, COL, 4);
 	}
 }
 
