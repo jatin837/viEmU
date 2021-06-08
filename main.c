@@ -25,7 +25,7 @@ void editor_draw_rows() {
 	char COL[32];
 	for (y = 0; y<24; y++) {
 		snprintf(COL, sizeof(COL), "%d \n\r", y+1);
-		write(STDOUT_FILENO, COL, 4);
+		write(STDOUT_FILENO, COL, 9);
 	}
 }
 
